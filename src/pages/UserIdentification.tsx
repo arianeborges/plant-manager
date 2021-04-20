@@ -8,6 +8,8 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import { Button } from '../components/Button';
 import colors from '../styles/colors';
@@ -44,24 +46,26 @@ export function UserIdentification() {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         enabled
       >
-        <View style={styles.container}>
-          <Text style={styles.emoji}> {isFilled ? '😀' : '😄'} </Text>
-          <Text style={styles.title}>What should {'\n'} I call you? </Text>
-          <TextInput
-            style={[
-              styles.input,
-              (isFocused || isFilled) && { borderColor: colors.green },
-            ]}
-            placeholder="Tell me your name"
-            onBlur={handleInputBlur}
-            onFocus={handleInputFocus}
-            onChangeText={handleInputChange}
-          />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
+            <Text style={styles.emoji}> {isFilled ? '😀' : '😄'} </Text>
+            <Text style={styles.title}>What should {'\n'} I call you? </Text>
+            <TextInput
+              style={[
+                styles.input,
+                (isFocused || isFilled) && { borderColor: colors.green },
+              ]}
+              placeholder="Tell me your name"
+              onBlur={handleInputBlur}
+              onFocus={handleInputFocus}
+              onChangeText={handleInputChange}
+            />
 
-          <View style={styles.footer}>
-            <Button title="Confirm" onPress={handleConfirm} />
+            <View style={styles.footer}>
+              <Button title="Confirm" onPress={handleConfirm} />
+            </View>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </>
   );
