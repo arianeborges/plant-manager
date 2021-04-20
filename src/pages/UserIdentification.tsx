@@ -1,15 +1,63 @@
-import React from 'react';
-import { View, Text, StatusBar, StyleSheet, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  StatusBar,
+  StyleSheet,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
+import { Button } from '../components/Button';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 
 export function UserIdentification() {
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFilled, setIsFilled] = useState(false);
+  const [name, setName] = useState<string>();
+
+  function handleInputBlur() {
+    setIsFocused(false);
+    setIsFilled(!!name);
+  }
+
+  function handleInputFocus() {
+    setIsFocused(true);
+  }
+
+  function handleInputChange(value: string) {
+    setIsFilled(!!value);
+    setName(value);
+  }
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.emoji}> 😀 </Text>
-      <Text style={styles.title}>Como podemos {'\n'} chamar você?</Text>
-      <TextInput style={styles.input} />
-    </View>
+    <>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        enabled
+      >
+        <View style={styles.container}>
+          <Text style={styles.emoji}> {isFilled ? '😀' : '😄'} </Text>
+          <Text style={styles.title}>What should {'\n'} I call you? </Text>
+          <TextInput
+            style={[
+              styles.input,
+              (isFocused || isFilled) && { borderColor: colors.green },
+            ]}
+            placeholder="Tell me your name"
+            onBlur={handleInputBlur}
+            onFocus={handleInputFocus}
+            onChangeText={handleInputChange}
+          />
+
+          <View style={styles.footer}>
+            <Button title="Confirmar" />
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </>
   );
 }
 
@@ -19,7 +67,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: StatusBar.currentHeight,
-    padding: 20,
+    paddingHorizontal: 54,
   },
   emoji: {
     fontSize: 44,
@@ -42,5 +90,10 @@ const styles = StyleSheet.create({
     marginTop: 50,
     padding: 10,
     textAlign: 'center',
+  },
+  footer: {
+    width: '100%',
+    marginTop: 40,
+    paddingHorizontal: 20,
   },
 });
