@@ -1,8 +1,16 @@
 import React from 'react';
-import { Text, View, Image, StyleSheet, Platform } from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
+
+import Icon from 'react-native-vector-icons/Feather';
 
 import wateringImg from '../assets/watering.png';
-import { Button } from '../components/Button';
 import colors from '../styles/colors';
 
 export function Welcome() {
@@ -19,8 +27,9 @@ export function Welcome() {
         Não esqueça mais de regar suas {'\n'} plantas. Nós cuidamos de lembrar
         você {'\n'} sempre que precisar.
       </Text>
-
-      <Button />
+      <TouchableOpacity style={styles.button} activeOpacity={0.7}>
+        <Icon name="chevron-right" size={32} style={styles.icon} />
+      </TouchableOpacity>
     </View>
   );
 }
