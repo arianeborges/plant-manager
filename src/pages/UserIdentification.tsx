@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, Text, StatusBar, StyleSheet, TextInput } from 'react-native';
+import Emoji from '../components/Emoji';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 
 export function UserIdentification() {
   return (
     <View style={styles.container}>
-      <Text style={styles.emoji}> :) </Text>
+      <Text style={styles.emoji}> 😀 </Text>
       <Text style={styles.title}>Como podemos {'\n'} chamar você?</Text>
       <TextInput style={styles.input} />
     </View>
