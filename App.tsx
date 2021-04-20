@@ -1,18 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Welcome } from './src/pages/Welcome';
 
 export default function App() {
-  return (
-    <View style={style.container}>
-      <Text>NLW#5</Text>
-    </View>
-  );
+  return <Welcome />;
 }
-
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
