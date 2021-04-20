@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Platform,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Feather';
@@ -20,7 +21,7 @@ export function Welcome() {
         Gerencie {'\n'} suas plantas {'\n'} de forma fácil
       </Text>
 
-      <Image source={wateringImg} />
+      <Image source={wateringImg} style={styles.image} resizeMode="contain" />
 
       <Text style={styles.subtitle}>
         {' '}
@@ -52,6 +53,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingHorizontal: 20,
     color: colors.heading,
+  },
+  image: {
+    height: Dimensions.get('window').width * 0.7,
   },
   button: {
     backgroundColor: colors.green,
