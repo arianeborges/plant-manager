@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StatusBar, StyleSheet, TextInput } from 'react-native';
+import Emoji from '../components/Emoji';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 
