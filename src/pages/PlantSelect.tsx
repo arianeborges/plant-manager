@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, StatusBar } from 'react-native';
 import colors from '../styles/colors';
 
 export function PlantSelect() {
@@ -13,6 +13,10 @@ export function PlantSelect() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: StatusBar.currentHeight,
+    paddingHorizontal: 54,
     backgroundColor: colors.background,
   },
 });
