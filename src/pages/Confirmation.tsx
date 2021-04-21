@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 import { StyleSheet, View, Text, StatusBar } from 'react-native';
 import { Button } from '../components/Button';
@@ -5,6 +6,12 @@ import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 
 export function Confirmation() {
+  const navigation = useNavigation();
+
+  function handlePlantSelect() {
+    navigation.navigate('PlantSelect');
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.emoji}> 😀 </Text>
@@ -16,7 +23,7 @@ export function Confirmation() {
       </Text>
 
       <View style={styles.footer}>
-        <Button title="Let's go" />
+        <Button title="Let's go" onPress={handlePlantSelect} />
       </View>
     </View>
   );
