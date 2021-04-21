@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 20,
+    paddingVertical: 20,
     marginTop: getStatusBarHeight(),
   },
   greetings: {
