@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Header } from '../components/Header';
+import { RoomButton } from '../components/RoomButton';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 
@@ -13,6 +14,7 @@ export function PlantSelect() {
         <Text style={styles.title}>In which room </Text>
         <Text style={styles.subtitle}>do you want to place your plant?</Text>
       </View>
+      <RoomButton title="Kitchen" active />
     </View>
   );
 }
