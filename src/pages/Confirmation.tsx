@@ -1,29 +1,49 @@
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/core';
 import React from 'react';
 import { StyleSheet, View, Text, Platform } from 'react-native';
 import { Button } from '../components/Button';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 
+interface Params {
+  title: string;
+  subtitle: string;
+  buttonTitle: string;
+  icon: 'smile' | 'hug';
+  nextScreen: string;
+}
+
+const emojis = {
+  hug: '🤗',
+  smile: '😀',
+};
+
 export function Confirmation() {
   const navigation = useNavigation();
+  const routes = useRoute();
+
+  const {
+    title,
+    subtitle,
+    buttonTitle,
+    icon,
+    nextScreen,
+  } = routes.params as Params;
 
   function handlePlantSelect() {
-    navigation.navigate('PlantSelect');
+    navigation.navigate(nextScreen);
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.emoji}> 😀 </Text>
+      <Text style={styles.emoji}> {emojis[icon]} </Text>
 
-      <Text style={styles.title}>Ready</Text>
+      <Text style={styles.title}>{title}</Text>
 
-      <Text style={styles.subtitle}>
-        Now let&apos;s start taking care of your plants very carefully.
-      </Text>
+      <Text style={styles.subtitle}>{subtitle}</Text>
 
       <View style={styles.footer}>
-        <Button title="Let's go" onPress={handlePlantSelect} />
+        <Button title={buttonTitle} onPress={handlePlantSelect} />
       </View>
     </View>
   );
