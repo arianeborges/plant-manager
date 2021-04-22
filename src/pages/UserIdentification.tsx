@@ -25,9 +25,12 @@ export function UserIdentification() {
   async function handleConfirm() {
     if (!name) return Alert.alert('Tell me what I should call you 😥');
 
-    await AsyncStorage.setItem('@plantmanager:user', name);
-
-    return navigation.navigate('Confirmation');
+    try {
+      await AsyncStorage.setItem('@plantmanager:user', name);
+      navigation.navigate('Confirmation');
+    } catch (error) {
+      return Alert.alert('Could not save your name 😥');
+    }
   }
 
   function handleInputBlur() {
