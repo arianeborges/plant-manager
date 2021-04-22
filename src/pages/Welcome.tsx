@@ -7,7 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  StatusBar,
+  Platform,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Feather';
@@ -51,13 +51,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-around',
-    // paddingTop: Platform.OS === 'android' ? 80 : 0,
-    marginTop: StatusBar.currentHeight,
+    paddingTop: Platform.OS === 'android' ? 30 : 30,
     paddingHorizontal: 20,
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
     textAlign: 'center',
     color: colors.heading,
     fontFamily: fonts.heading,

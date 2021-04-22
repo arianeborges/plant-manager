@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  StatusBar,
   StyleSheet,
   TextInput,
   KeyboardAvoidingView,
@@ -76,7 +75,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: StatusBar.currentHeight,
+    paddingTop: Platform.OS === 'android' ? 30 : 30,
     paddingHorizontal: 54,
   },
   emoji: {
@@ -84,7 +83,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
     textAlign: 'center',
     color: colors.heading,
     fontFamily: fonts.heading,
