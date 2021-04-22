@@ -9,6 +9,7 @@ import api from '../services/api';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 import { PlantCardPrimary } from '../components/PlantCardPrimary';
+import { Load } from '../components/Load';
 
 interface EnvironmentProps {
   key: string;
@@ -33,6 +34,7 @@ export function PlantSelect() {
   const [plants, setPlants] = useState<PlantProps[]>([]);
   const [filteredPlants, setFilteredPlants] = useState<PlantProps[]>([]);
   const [environmentSelected, setEnvironmentSelected] = useState('all');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchEnvironment() {
@@ -56,6 +58,7 @@ export function PlantSelect() {
 
       setPlants(data);
       setFilteredPlants(data);
+      setLoading(false);
     }
     fetchPlants();
   }, []);
@@ -72,6 +75,8 @@ export function PlantSelect() {
 
     setFilteredPlants(filtered);
   }
+
+  if (loading) return <Load />;
 
   return (
     <View style={styles.container}>
