@@ -2,7 +2,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
 import { Confirmation } from '../pages/Confirmation';
-import { MyPlants } from '../pages/MyPlants';
 import { PlantSave } from '../pages/PlantSave';
 import { UserIdentification } from '../pages/UserIdentification';
 import { Welcome } from '../pages/Welcome';
