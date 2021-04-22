@@ -11,14 +11,14 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { SvgFromUri } from 'react-native-svg';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
-import { useRoute } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/core';
 import { format, isBefore } from 'date-fns';
 import { Button } from '../components/Button';
 
 import waterdrop from '../assets/waterdrop.png';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
-import { PlantProps } from '../libs/storage';
+import { PlantProps, savePlant } from '../libs/storage';
 
 interface Params {
   plant: PlantProps;
@@ -27,6 +27,7 @@ interface Params {
 export function PlantSave() {
   const route = useRoute();
   const { plant } = route.params as Params;
+  const navigation = useNavigation();
 
   const [selectedDateTime, setSelectedDateTime] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(Platform.OS === 'ios');
@@ -51,6 +52,22 @@ export function PlantSave() {
     setShowDatePicker(oldState => !oldState);
   }
 
+  async function handleSave() {
+    try {
+      await savePlant({ ...plant, dateTimeNotification: selectedDateTime });
+
+      navigation.navigate('Confirmation', {
+        title: 'Everything is alright',
+        subtitle:
+          'We will always remind you to take care of your little plant with enough love.',
+        buttonTitle: 'Thanks!',
+        icon: 'hug',
+        nextScreen: 'MyPlants',
+      });
+    } catch {
+      Alert.alert('Could not save the plant! 😥');
+    }
+  }
   return (
     <View style={styles.container}>
       <View style={styles.plantInfo}>
@@ -88,7 +105,7 @@ export function PlantSave() {
           </TouchableOpacity>
         )}
 
-        <Button title="Register Plant" onPress={() => {}} />
+        <Button title="Register Plant" onPress={handleSave} />
       </View>
     </View>
   );
@@ -132,10 +149,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: colors.blue_light,
-    padding: 20,
+    padding: 15,
     borderRadius: 20,
     position: 'relative',
-    bottom: 60,
+    marginTop: -60,
   },
   tipImage: {
     width: 56,
@@ -154,7 +171,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.complement,
     color: colors.heading,
     fontSize: 13,
-    marginBottom: 5,
   },
   dateTimePickerButton: {
     alignItems: 'center',
