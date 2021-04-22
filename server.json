@@ -88,7 +88,7 @@
       "id": 7,
       "name": "Fruitful",
       "about": "They require a few hours of sunshine a day, so keep them close to windows.",
-      "water_tips": "Always water the soil and not the leaves. Water 3 times a week",
+      "water_tips": "Always water the soil and not the leaves. Water 3 times a week.",
       "photo": "https://storage.googleapis.com/golden-wind/nextlevelweek/05-plantmanager/7.svg",
       "environments": ["kitchen", "living_room"],
       "frequency": {
