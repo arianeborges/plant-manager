@@ -11,6 +11,7 @@ import { loadPlant, PlantProps } from '../libs/storage';
 import colors from '../styles/colors';
 import waterdrop from '../assets/waterdrop.png';
 import fonts from '../styles/fonts';
+import { PlantCardSecondary } from '../components/PlantCardSecondary';
 
 export function MyPlants() {
   const [loading, setLoading] = useState(true);
@@ -32,10 +33,11 @@ export function MyPlants() {
       setNextWatered(
         `Water your ${plantsStoraged[0].name} in ${nextTime} hours`,
       );
-
       setMyPlants(plantsStoraged);
       setLoading(false);
     }
+
+    loadStorageData();
   }, []);
 
   return (
@@ -54,7 +56,7 @@ export function MyPlants() {
         <FlatList
           data={myPlants}
           keyExtractor={item => String(item.id)}
-          renderItem={({ item }) => <Text>Elemento</Text>}
+          renderItem={({ item }) => <PlantCardSecondary data={item} />}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flex: 1 }}
         />
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
     flex: 1,
     color: colors.blue,
     paddingHorizontal: 20,
-    textAlign: 'justify',
+    // textAlign: 'justify',
   },
   plants: {
     flex: 1,
