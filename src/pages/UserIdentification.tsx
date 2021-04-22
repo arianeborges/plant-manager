@@ -22,12 +22,19 @@ export function UserIdentification() {
   const [isFilled, setIsFilled] = useState(false);
   const [name, setName] = useState<string>();
 
+  // eslint-disable-next-line consistent-return
   async function handleConfirm() {
     if (!name) return Alert.alert('Tell me what I should call you 😥');
 
     try {
       await AsyncStorage.setItem('@plantmanager:user', name);
-      navigation.navigate('Confirmation');
+      navigation.navigate('Confirmation', {
+        title: 'Ready',
+        subtitle: "Now let's start taking care of your plants very carefully.",
+        buttonTitle: "Let's go",
+        icon: 'smile',
+        nextScreen: 'PlantSelect',
+      });
     } catch (error) {
       return Alert.alert('Could not save your name 😥');
     }
