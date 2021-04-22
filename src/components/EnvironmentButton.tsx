@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 12,
-    marginRight: 5,
+    marginHorizontal: 5,
   },
   containerActive: {
     backgroundColor: colors.green_light,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.text,
   },
   textActive: {
-    color: colors.green_dark,
     fontFamily: fonts.heading,
+    color: colors.green_dark,
   },
 });
