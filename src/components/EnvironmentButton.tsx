@@ -4,17 +4,17 @@ import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 
-interface RoomButtonProps extends RectButtonProps {
+interface EnvironmentButtonProps extends RectButtonProps {
   title: string;
   // eslint-disable-next-line react/require-default-props
   active?: boolean;
 }
 
-export function RoomButton({
+export function EnvironmentButton({
   title,
   active = false,
   ...rest
-}: RoomButtonProps) {
+}: EnvironmentButtonProps) {
   return (
     <RectButton
       style={[styles.container, active && styles.containerActive]}
