@@ -31,6 +31,7 @@ interface PlantProps {
 export function PlantSelect() {
   const [environments, setEnvironments] = useState<EnvironmentProps[]>([]);
   const [plants, setPlants] = useState<PlantProps[]>([]);
+  const [filteredPlants, setFilteredPlants] = useState<PlantProps[]>([]);
   const [environmentSelected, setEnvironmentSelected] = useState('all');
 
   useEffect(() => {
@@ -52,13 +53,24 @@ export function PlantSelect() {
   useEffect(() => {
     async function fetchPlants() {
       const { data } = await api.get('plants?_sort=name&_order=asc');
+
       setPlants(data);
+      setFilteredPlants(data);
     }
     fetchPlants();
   }, []);
 
+  // eslint-disable-next-line consistent-return
   function handleEnvironmentSelected(environment: string) {
     setEnvironmentSelected(environment);
+
+    if (environment === 'all') return setFilteredPlants(plants);
+
+    const filtered = plants.filter(plant =>
+      plant.environments.includes(environment),
+    );
+
+    setFilteredPlants(filtered);
   }
 
   return (
@@ -90,7 +102,7 @@ export function PlantSelect() {
         <FlatList
           showsVerticalScrollIndicator={false}
           numColumns={2}
-          data={plants}
+          data={filteredPlants}
           keyExtractor={item => String(item.id)}
           renderItem={({ item }) => <PlantCardPrimary data={item} />}
         />
