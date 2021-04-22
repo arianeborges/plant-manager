@@ -2,27 +2,56 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { Header } from '../components/Header';
-import { RoomButton } from '../components/RoomButton';
+import { EnvironmentButton } from '../components/EnvironmentButton';
 
 import api from '../services/api';
 
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
+import { PlantCardPrimary } from '../components/PlantCardPrimary';
 
-interface RoomProps {
+interface EnvironmentProps {
   key: string;
   title: string;
 }
 
+interface PlantProps {
+  id: string;
+  name: string;
+  about: string;
+  water_tips: string;
+  photo: string;
+  environments: [string];
+  frequency: {
+    times: number;
+    repeat_every: string;
+  };
+}
+
 export function PlantSelect() {
-  const [rooms, setRooms] = useState<RoomProps[]>([]);
+  const [environments, setEnvironments] = useState<EnvironmentProps[]>([]);
+  const [plants, setPlants] = useState<PlantProps[]>([]);
 
   useEffect(() => {
-    async function fetchRoom() {
+    async function fetchEnvironment() {
       const { data } = await api.get('plants_environments');
-      setRooms(data);
+      setEnvironments([
+        {
+          key: 'all',
+          title: 'All',
+        },
+        ...data,
+      ]);
     }
-    fetchRoom();
+    fetchEnvironment();
+  }, []);
+
+  useEffect(() => {
+    async function fetchPlants() {
+      const { data } = await api.get('plants');
+      setPlants(data);
+    }
+    fetchPlants();
   }, []);
 
   return (
@@ -33,17 +62,25 @@ export function PlantSelect() {
         <Text style={styles.title}>In which room </Text>
         <Text style={styles.subtitle}>do you want to place your plant?</Text>
       </View>
+
       <View>
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.roomList}
-          data={rooms}
+          contentContainerStyle={styles.environmentList}
+          data={environments}
           renderItem={({ item }) => (
-            <>
-              <RoomButton title={item.title} active />
-            </>
+            <EnvironmentButton title={item.title} active />
           )}
+        />
+      </View>
+
+      <View style={styles.plants}>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          numColumns={2}
+          data={plants}
+          renderItem={({ item }) => <PlantCardPrimary data={item} />}
         />
       </View>
     </View>
@@ -71,11 +108,16 @@ const styles = StyleSheet.create({
     color: colors.heading,
     lineHeight: 20,
   },
-  roomList: {
+  environmentList: {
     height: 40,
     justifyContent: 'center',
     paddingBottom: 5,
     marginLeft: 32,
     marginVertical: 32,
+  },
+  plants: {
+    flex: 1,
+    paddingHorizontal: 32,
+    justifyContent: 'center',
   },
 });
