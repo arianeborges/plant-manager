@@ -13,10 +13,13 @@ export interface PlantProps {
     repeat_every: string;
   };
   dateTimeNotification: Date;
+  hour: string;
 }
 
 interface StoragePlantProps {
-  [id: string]: { data: PlantProps };
+  [id: string]: {
+    data: PlantProps;
+  };
 }
 
 export async function savePlant(plant: PlantProps): Promise<void> {
@@ -32,7 +35,10 @@ export async function savePlant(plant: PlantProps): Promise<void> {
 
     await AsyncStorage.setItem(
       '@plantmanager:plants',
-      JSON.stringify({ ...newPlant, ...oldPlants }),
+      JSON.stringify({
+        ...newPlant,
+        ...oldPlants,
+      }),
     );
   } catch (error) {
     throw new Error(error);
