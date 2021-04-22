@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/core';
 import React, { useState } from 'react';
 import {
@@ -9,6 +10,7 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from 'react-native';
 import { Button } from '../components/Button';
 import colors from '../styles/colors';
@@ -20,8 +22,12 @@ export function UserIdentification() {
   const [isFilled, setIsFilled] = useState(false);
   const [name, setName] = useState<string>();
 
-  function handleConfirm() {
-    navigation.navigate('Confirmation');
+  async function handleConfirm() {
+    if (!name) return Alert.alert('Tell me what I should call you 😥');
+
+    await AsyncStorage.setItem('@plantmanager:user', name);
+
+    return navigation.navigate('Confirmation');
   }
 
   function handleInputBlur() {
