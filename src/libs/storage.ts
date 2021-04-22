@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export interface PlantProps {
   id: string;
   name: string;
@@ -10,4 +12,28 @@ export interface PlantProps {
     repeat_every: string;
   };
   dateTimeNotification: Date;
+}
+
+interface StoragePlantPros {
+  [id: string]: { data: PlantProps };
+}
+
+export async function savePlant(plant: PlantProps): Promise<void> {
+  try {
+    const data = await AsyncStorage.getItem('@plantmanager:plants');
+    const oldPlants = data ? (JSON.parse(data) as StoragePlantPros) : {};
+
+    const newPlant = {
+      [plant.id]: {
+        data: plant,
+      },
+    };
+
+    await AsyncStorage.setItem(
+      '@plantmanager:plants',
+      JSON.stringify({ ...newPlant, ...oldPlants }),
+    );
+  } catch (error) {
+    throw new Error(error);
+  }
 }
