@@ -31,6 +31,7 @@ interface PlantProps {
 export function PlantSelect() {
   const [environments, setEnvironments] = useState<EnvironmentProps[]>([]);
   const [plants, setPlants] = useState<PlantProps[]>([]);
+  const [environmentSelected, setEnvironmentSelected] = useState('all');
 
   useEffect(() => {
     async function fetchEnvironment() {
@@ -56,6 +57,10 @@ export function PlantSelect() {
     fetchPlants();
   }, []);
 
+  function handleEnvironmentSelected(environment: string) {
+    setEnvironmentSelected(environment);
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -72,7 +77,11 @@ export function PlantSelect() {
           contentContainerStyle={styles.environmentList}
           data={environments}
           renderItem={({ item }) => (
-            <EnvironmentButton title={item.title} active />
+            <EnvironmentButton
+              title={item.title}
+              active={item.key === environmentSelected}
+              onPress={() => handleEnvironmentSelected(item.key)}
+            />
           )}
         />
       </View>
@@ -82,6 +91,7 @@ export function PlantSelect() {
           showsVerticalScrollIndicator={false}
           numColumns={2}
           data={plants}
+          keyExtractor={item => String(item.id)}
           renderItem={({ item }) => <PlantCardPrimary data={item} />}
         />
       </View>
@@ -99,22 +109,22 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 17,
-    fontFamily: fonts.heading,
     color: colors.heading,
+    fontFamily: fonts.heading,
     lineHeight: 20,
     marginTop: 15,
   },
   subtitle: {
-    fontSize: 17,
     fontFamily: fonts.text,
-    color: colors.heading,
+    fontSize: 17,
     lineHeight: 20,
+    color: colors.heading,
   },
   environmentList: {
     height: 40,
     justifyContent: 'center',
     paddingBottom: 5,
-    marginLeft: 32,
+    paddingHorizontal: 30,
     marginVertical: 32,
   },
   plants: {
