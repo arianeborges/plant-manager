@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.shape,
+    marginVertical: 5,
   },
   title: {
     flex: 1,
@@ -90,5 +91,6 @@ const styles = StyleSheet.create({
     paddingRight: 32,
     paddingVertical: 32,
     right: 16,
+    marginTop: 5,
   },
 });
