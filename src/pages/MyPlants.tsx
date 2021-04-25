@@ -30,9 +30,7 @@ export function MyPlants() {
         },
       );
 
-      setNextWatered(
-        `Water your ${plantsStoraged[0].name} in ${nextTime} hours`,
-      );
+      setNextWatered(`Water your ${plantsStoraged[0].name} in ${nextTime}`);
       setMyPlants(plantsStoraged);
       setLoading(false);
     }
@@ -58,7 +56,6 @@ export function MyPlants() {
           keyExtractor={item => String(item.id)}
           renderItem={({ item }) => <PlantCardSecondary data={item} />}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flex: 1 }}
         />
       </View>
     </View>
@@ -91,7 +88,7 @@ const styles = StyleSheet.create({
     flex: 1,
     color: colors.blue,
     paddingHorizontal: 20,
-    // textAlign: 'justify',
+    lineHeight: 23,
   },
   plants: {
     flex: 1,
