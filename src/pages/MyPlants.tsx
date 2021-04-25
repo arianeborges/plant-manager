@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Platform, Image, Text } from 'react-native';
+import { StyleSheet, View, Platform, Image, Text, Alert } from 'react-native';
 // eslint-disable-next-line import/no-duplicates
 import { formatDistance } from 'date-fns';
 // eslint-disable-next-line import/no-duplicates
 import { enGB } from 'date-fns/locale';
 import { FlatList } from 'react-native-gesture-handler';
 import { Header } from '../components/Header';
-import { loadPlant, PlantProps } from '../libs/storage';
+import { loadPlant, PlantProps, removePlant } from '../libs/storage';
 import { Load } from '../components/Load';
 import { PlantCardSecondary } from '../components/PlantCardSecondary';
 
@@ -18,6 +18,29 @@ export function MyPlants() {
   const [loading, setLoading] = useState(true);
   const [myPlants, setMyPlants] = useState<PlantProps[]>([]);
   const [nextWatered, setNextWatered] = useState<string>();
+
+  function handleRemove(plant: PlantProps) {
+    Alert.alert('Remove', `Do you want to remove ${plant.name}?`, [
+      {
+        text: 'No 🙏',
+        style: 'cancel',
+      },
+      {
+        text: 'Yes 😥',
+        onPress: async () => {
+          try {
+            await removePlant(plant.id);
+
+            setMyPlants(oldData =>
+              oldData.filter(item => item.id !== plant.id),
+            );
+          } catch (error) {
+            Alert.alert('Could not be removed! 😥');
+          }
+        },
+      },
+    ]);
+  }
 
   useEffect(() => {
     async function loadStorageData() {
@@ -57,7 +80,14 @@ export function MyPlants() {
         <FlatList
           data={myPlants}
           keyExtractor={item => String(item.id)}
-          renderItem={({ item }) => <PlantCardSecondary data={item} />}
+          renderItem={({ item }) => (
+            <PlantCardSecondary
+              data={item}
+              handleRemove={() => {
+                handleRemove(item);
+              }}
+            />
+          )}
           showsVerticalScrollIndicator={false}
         />
       </View>
