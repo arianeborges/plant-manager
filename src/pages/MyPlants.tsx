@@ -7,11 +7,12 @@ import { enGB } from 'date-fns/locale';
 import { FlatList } from 'react-native-gesture-handler';
 import { Header } from '../components/Header';
 import { loadPlant, PlantProps } from '../libs/storage';
+import { Load } from '../components/Load';
+import { PlantCardSecondary } from '../components/PlantCardSecondary';
 
 import colors from '../styles/colors';
 import waterdrop from '../assets/waterdrop.png';
 import fonts from '../styles/fonts';
-import { PlantCardSecondary } from '../components/PlantCardSecondary';
 
 export function MyPlants() {
   const [loading, setLoading] = useState(true);
@@ -37,6 +38,8 @@ export function MyPlants() {
 
     loadStorageData();
   }, []);
+
+  if (loading) return <Load />;
 
   return (
     <View style={styles.container}>
