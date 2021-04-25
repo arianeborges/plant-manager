@@ -13,6 +13,7 @@ import { SvgFromUri } from 'react-native-svg';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { useNavigation, useRoute } from '@react-navigation/core';
 import { format, isBefore } from 'date-fns';
+import { ScrollView } from 'react-native-gesture-handler';
 import { Button } from '../components/Button';
 
 import waterdrop from '../assets/waterdrop.png';
@@ -68,46 +69,54 @@ export function PlantSave() {
       Alert.alert('Could not save the plant! 😥');
     }
   }
+
   return (
-    <View style={styles.container}>
-      <View style={styles.plantInfo}>
-        <SvgFromUri uri={plant.photo} height={150} width={150} />
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.container}
+    >
+      <View style={styles.container}>
+        <View style={styles.plantInfo}>
+          <SvgFromUri uri={plant.photo} height={150} width={150} />
 
-        <Text style={styles.plantName}>{plant.name}</Text>
-        <Text style={styles.aboutPlant}>{plant.about}</Text>
-      </View>
-
-      <View style={styles.controller}>
-        <View style={styles.tipContainer}>
-          <Image source={waterdrop} style={styles.tipImage} />
-          <Text style={styles.tipText}>{plant.water_tips}</Text>
+          <Text style={styles.plantName}>{plant.name}</Text>
+          <Text style={styles.aboutPlant}>{plant.about}</Text>
         </View>
 
-        <Text style={styles.alertLabel}>Choose the best time to remember:</Text>
+        <View style={styles.controller}>
+          <View style={styles.tipContainer}>
+            <Image source={waterdrop} style={styles.tipImage} />
+            <Text style={styles.tipText}>{plant.water_tips}</Text>
+          </View>
 
-        {showDatePicker && (
-          <DateTimePicker
-            mode="time"
-            display="spinner"
-            onChange={handleChangeTime}
-            value={selectedDateTime}
-          />
-        )}
+          <Text style={styles.alertLabel}>
+            Choose the best time to remember:
+          </Text>
 
-        {Platform.OS === 'android' && (
-          <TouchableOpacity
-            style={styles.dateTimePickerButton}
-            onPress={handleOpenDateTimePickerForAndroid}
-          >
-            <Text style={styles.dateTimePickerText}>
-              {`Change ${format(selectedDateTime, 'HH:mm')}`}
-            </Text>
-          </TouchableOpacity>
-        )}
+          {showDatePicker && (
+            <DateTimePicker
+              mode="time"
+              display="spinner"
+              onChange={handleChangeTime}
+              value={selectedDateTime}
+            />
+          )}
 
-        <Button title="Register Plant" onPress={handleSave} />
+          {Platform.OS === 'android' && (
+            <TouchableOpacity
+              style={styles.dateTimePickerButton}
+              onPress={handleOpenDateTimePickerForAndroid}
+            >
+              <Text style={styles.dateTimePickerText}>
+                {`Change ${format(selectedDateTime, 'HH:mm')}`}
+              </Text>
+            </TouchableOpacity>
+          )}
+
+          <Button title="Register Plant" onPress={handleSave} />
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
