@@ -3,7 +3,7 @@ import { StyleSheet, View, Platform, Image, Text, Alert } from 'react-native';
 // eslint-disable-next-line import/no-duplicates
 import { formatDistance } from 'date-fns';
 // eslint-disable-next-line import/no-duplicates
-import { enGB } from 'date-fns/locale';
+import { enGB, fi } from 'date-fns/locale';
 import { FlatList } from 'react-native-gesture-handler';
 import { Header } from '../components/Header';
 import { loadPlant, PlantProps, removePlant } from '../libs/storage';
@@ -13,11 +13,12 @@ import { PlantCardSecondary } from '../components/PlantCardSecondary';
 import colors from '../styles/colors';
 import waterdrop from '../assets/waterdrop.png';
 import fonts from '../styles/fonts';
+import NoPlants from '../components/NoPlants';
 
 export function MyPlants() {
   const [loading, setLoading] = useState(true);
   const [myPlants, setMyPlants] = useState<PlantProps[]>([]);
-  const [nextWatered, setNextWatered] = useState<string>();
+  const [nextWatered, setNextWatering] = useState<string>();
 
   function handleRemove(plant: PlantProps) {
     Alert.alert('Remove', `Do you want to remove ${plant.name}?`, [
@@ -42,29 +43,46 @@ export function MyPlants() {
     ]);
   }
 
+
+
   useEffect(() => {
     async function loadStorageData() {
       const plantsStoraged = await loadPlant();
 
-      const nextTime = formatDistance(
-        new Date(plantsStoraged[0].dateTimeNotification).getTime(),
-        new Date().getTime(),
-        {
-          locale: enGB,
-        },
-      );
+      if(!plantsStoraged[0] && !myPlants[0]){
+          setNextWatering(`No plant to water!`);
 
-      setNextWatered(`Water your ${plantsStoraged[0].name} in ${nextTime}`);
-      setMyPlants(plantsStoraged);
-      setLoading(false);
+          setMyPlants(plantsStoraged);
+          setLoading(false);
+
+          return;
+      }
+
+      for(let i = 0; i < plantsStoraged.length; i++){
+        const nextTime = formatDistance(
+          new Date(plantsStoraged[i].dateTimeNotification).getTime(),
+          new Date().getTime(),
+          {
+            locale: enGB,
+          },
+        );
+
+        setNextWatering(`Water your ${plantsStoraged[i].name} in ${nextTime}`);
+        setMyPlants(plantsStoraged);
+        setLoading(false);
+      }
+
+
     }
 
     loadStorageData();
   }, []);
 
-  if (loading) return <Load />;
+  // if (loading) return <Load />;
 
-  return (
+  return loading ? (
+    <Load />
+  ) : (
     <View style={styles.container}>
       <Header />
 
@@ -75,21 +93,24 @@ export function MyPlants() {
       </View>
 
       <View style={styles.plants}>
-        <Text style={styles.plantsTitle}>Next watered</Text>
+        <Text style={styles.plantsTitle}>Next watering</Text>
 
-        <FlatList
-          data={myPlants}
-          keyExtractor={item => String(item.id)}
-          renderItem={({ item }) => (
-            <PlantCardSecondary
-              data={item}
-              handleRemove={() => {
-                handleRemove(item);
-              }}
-            />
-          )}
-          showsVerticalScrollIndicator={false}
-        />
+        {!myPlants[0] ? ( <NoPlants /> ) : (
+          <FlatList
+            data={myPlants}
+            keyExtractor={item => String(item.id)}
+            renderItem={({ item }) => (
+              <PlantCardSecondary
+                data={item}
+                handleRemove={() => {
+                  handleRemove(item);
+                }}
+              />
+            )}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
+
       </View>
     </View>
   );
