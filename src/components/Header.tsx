@@ -1,21 +1,53 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { View, Text, StyleSheet, Image, Platform, Button } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import * as ImagePicker from 'expo-image-picker';
+
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
+import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 
 export function Header() {
   const [userName, setUserName] = useState<string>();
+  const [image, setImage] = useState<string>();
+
+  async function loadStorageUserName() {
+    const avatar = await AsyncStorage.getItem('@plantmanager:avatar');
+    const user = await AsyncStorage.getItem('@plantmanager:user');
+
+    setUserName(user || '');
+    setImage(avatar  || '');
+  }
 
   useEffect(() => {
-    async function loadStorageUserName() {
-      const user = await AsyncStorage.getItem('@plantmanager:user');
-      setUserName(user || '');
+    async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
     }
 
     loadStorageUserName();
   }, []);
+
+  const handleUpdateAvatar = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+
+      await AsyncStorage.setItem('@plantmanager:avatar', result.uri);
+    }
+  };
+
 
   return (
     <View style={styles.container}>
@@ -24,13 +56,9 @@ export function Header() {
         <Text style={styles.userName}>{userName}</Text>
       </View>
 
-      <Image
-        source={{
-          uri:
-            'https://pyxis.nymag.com/v1/imgs/a22/179/b205a78510315d932427143ad6b6fb5694-03-homer-simpson-doughnuts.rsquare.w700.jpg',
-        }}
-        style={styles.image}
-      />
+      <TouchableOpacity onPress={handleUpdateAvatar}>
+        {image ? <Image source={{ uri: image }} style={styles.image} /> : <Icon name="photo-camera" style={styles.icon} />}
+      </TouchableOpacity>
     </View>
   );
 }
@@ -60,4 +88,8 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 35,
   },
+  icon: {
+    fontSize: 32,
+    color: colors.gray
+  }
 });
