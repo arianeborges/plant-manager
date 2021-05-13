@@ -14,6 +14,7 @@ import colors from '../styles/colors';
 import waterdrop from '../assets/waterdrop.png';
 import fonts from '../styles/fonts';
 import NoPlants from '../components/NoPlants';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 export function MyPlants() {
   const [loading, setLoading] = useState(true);
@@ -42,8 +43,6 @@ export function MyPlants() {
       },
     ]);
   }
-
-
 
   useEffect(() => {
     async function loadStorageData() {
@@ -77,8 +76,6 @@ export function MyPlants() {
 
     loadStorageData();
   }, []);
-
-  // if (loading) return <Load />;
 
   return loading ? (
     <Load />
@@ -121,7 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: Platform.OS === 'android' ? 30 : 30,
+    // paddingTop: Platform.OS === 'android' ? 30 : 30,
     paddingHorizontal: 30,
     backgroundColor: colors.background,
   },
